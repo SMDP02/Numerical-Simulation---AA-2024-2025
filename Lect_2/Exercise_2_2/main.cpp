@@ -79,7 +79,8 @@ int main(int argc, char *argv[]) {
                     double r2 = x * x + y * y + z * z;
                     block_avg[step] += r2;
 
-                    if (j == 0 && i == 0)  // Save only for the very first random walk
+                    // Saving only one trajectory 
+                    if (j == 0 && i == 0)
                         traj_discrete << step + 1 << "\t" << x << "\t" << y << "\t" << z << endl;
                 }
             }
@@ -126,17 +127,20 @@ int main(int argc, char *argv[]) {
                 double x = 0., y = 0., z = 0.;
 
                 for (int step = 0; step < Nsteps; step++) {
-                    double theta = rnd.Rannyu(0, M_PI);
+                    double costheta = rnd.Rannyu(-1, 1);
+                    double theta_unif = acos(costheta);
+
                     double phi = rnd.Rannyu(0, 2 * M_PI);
 
-                    x += a * sin(theta) * cos(phi);
-                    y += a * sin(theta) * sin(phi);
-                    z += a * cos(theta);
+                    x += a * sin(theta_unif) * cos(phi);
+                    y += a * sin(theta_unif) * sin(phi);
+                    z += a * cos(theta_unif);
 
                     double r2 = x * x + y * y + z * z;
                     block_avg[step] += r2;
 
-                    if (j == 0 && i == 0)  // Save only for the very first random walk
+                    // Saving only one trajectory 
+                    if (j == 0 && i == 0)
                         traj_continuous << step + 1 << "\t" << x << "\t" << y << "\t" << z << endl;
                 }
             }
@@ -162,7 +166,37 @@ int main(int argc, char *argv[]) {
         }
         output_continuous.close();
     }
+    // Uniformly distributed random numbers on the sphere
+    // Typical error
+    /***************************************************************************************************/ 
+    ofstream sphere_wrong("sphere_wrong.dat");
+    ofstream sphere_correct("sphere_correct.dat");
+    for (int i=0; i<3000; i++) {
+        double x = 0., y = 0., z = 0.;
+        double x_err = 0., y_err = 0., z_err = 0.;
 
+        double theta = rnd.Rannyu(0, M_PI);
+        double costheta = rnd.Rannyu(-1, 1);
+        double theta_unif = acos(costheta);
+
+        double phi = rnd.Rannyu(0, 2 * M_PI);
+
+        x += sin(theta_unif) * cos(phi);
+        y += sin(theta_unif) * sin(phi);
+        z += cos(theta_unif);
+
+        sphere_correct << x << "\t" << y << "\t" << z << endl;
+        
+        x_err += sin(theta) * cos(phi);
+        y_err += sin(theta) * sin(phi);
+        z_err += cos(theta);
+
+        sphere_wrong << x_err << "\t" << y_err << "\t" << z_err << endl;
+
+    }
+    sphere_wrong.close();
+    sphere_correct.close();
+    
     cout << "Simulation completed.\n";
     rnd.SaveSeed();
     return 0;
