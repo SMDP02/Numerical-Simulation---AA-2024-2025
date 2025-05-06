@@ -18,6 +18,14 @@ double error(const vector<double> &sum_prog,const vector<double> &sum_prog2, int
 double function_cosine(double x){
    return (M_PI/2.) * cos((M_PI * x)/2.);
 }
+double p_of_x(double x){
+   return -2*x+2;
+}
+
+double g_of_x(double x){
+   return (20./3.)*cos((M_PI*x)/2)/(8-pow(M_PI*x,2));
+}
+
 
 int main (int argc, char *argv[]){
 
@@ -65,8 +73,9 @@ int main (int argc, char *argv[]){
          sum += function_cosine(x_uniform);
          sum_var += pow(x_uniform - 1, 2);
          
-         double x_imp = rnd.Retta();
-         sum_impsampling += function_cosine(x_imp) / (-2.0 * x_imp + 2.0);       
+         double x_sampl = rnd.Line();
+         sum_impsampling += function_cosine(x_sampl)/p_of_x(x_sampl);
+         //sum_impsampling += function_cosine(x_imp)/(4./M_PI * (-M_PI/2. * x_imp +  M_PI/2.));       
    }
       ave1.push_back(sum/L);
       ave2.push_back(ave1[i]*ave1[i]);          

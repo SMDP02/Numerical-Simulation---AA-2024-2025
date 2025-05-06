@@ -52,9 +52,21 @@ double Random :: CauchyLorentz(double gamma, double mu){
 }
 // Method to generate a random number with a distribution -2x+2
 double Random::Retta() {
-   double y = Rannyu();  // y uniforme in [0,1)
-   return 1.0 - sqrt(1.0 - y);  // Trasformata inversa
+   double y = Rannyu();          // y uniforme in [0,1)
+   return 1.0 - sqrt(1.0 - y);   // Trasformata inversa
 }
+
+double Random::Retta_test() {
+   double y = Rannyu();          
+   return 1. - 2./M_PI * y; 
+}
+
+double Random :: Line(){
+   // This function generates a random number with distribution -2x+2
+   double y=Rannyu();
+   return 1-sqrt(1-y);
+}
+
 double Random :: Rannyu(double min, double max){
    // This function generates a random number in the range [min, max)
    return min+(max-min)*Rannyu();

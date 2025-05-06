@@ -69,6 +69,10 @@ int main(int argc, char *argv[]) {
                 double x = 0., y = 0., z = 0.;
 
                 for (int step = 0; step < Nsteps; step++) {
+                    // Saving only one trajectory 
+                    if (j == 0 && i == 0)
+                    traj_discrete << step + 1 << "\t" << x << "\t" << y << "\t" << z << endl;
+                    
                     int direction = int(rnd.Rannyu(0, 3)); 
                     int step_sign = (rnd.Rannyu(-1, 1) < 0) ? 1 : -1; 
 
@@ -78,10 +82,6 @@ int main(int argc, char *argv[]) {
 
                     double r2 = x * x + y * y + z * z;
                     block_avg[step] += r2;
-
-                    // Saving only one trajectory 
-                    if (j == 0 && i == 0)
-                        traj_discrete << step + 1 << "\t" << x << "\t" << y << "\t" << z << endl;
                 }
             }
 
@@ -167,7 +167,6 @@ int main(int argc, char *argv[]) {
         output_continuous.close();
     }
     // Uniformly distributed random numbers on the sphere
-    // Typical error
     /***************************************************************************************************/ 
     ofstream sphere_wrong("sphere_wrong.dat");
     ofstream sphere_correct("sphere_correct.dat");

@@ -40,6 +40,8 @@ public:
   double CauchyLorentz(double gamma, double mu);
 
   double Retta();
+  double Retta_test();
+  double Line();
 };
 
 #endif // __Random__
