@@ -1,0 +1,6 @@
+--- FINAL RESULTS ---
+Mode:          MIGRATION
+N. Processes:  8
+Global Best:   65.7239
+Execution Time: 269.805 seconds
+----------------------

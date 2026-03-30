@@ -20,17 +20,17 @@ System::~System() { // Destructor
 
 void System::compute_distance_matrix() {
     _distance_matrix.set_size(_ncities, _ncities);
-    const double R = 6371.0; // Raggio terrestre in km
+    const double R = 6371.0; // Earth's radius in km
 
     for(int i=0; i<_ncities; ++i) {
         for(int j=i+1; j<_ncities; ++j) {
-            // Conversione in radianti
+            // Conversion to radians
             double lat1 = _positions(i, 0) * M_PI / 180.0;
             double lon1 = _positions(i, 1) * M_PI / 180.0;
             double lat2 = _positions(j, 0) * M_PI / 180.0;
             double lon2 = _positions(j, 1) * M_PI / 180.0;
 
-            // Formula dell'Eversina (Haversine)
+            // Haversine formula
             double dlat = lat2 - lat1;
             double dlon = lon2 - lon1;
             double a = pow(sin(dlat / 2.0), 2) + cos(lat1) * cos(lat2) * pow(sin(dlon / 2.0), 2);

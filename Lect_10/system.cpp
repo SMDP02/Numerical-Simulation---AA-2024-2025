@@ -179,6 +179,13 @@ int System::get_ngenerations() { // Get method for the total number of generatio
     return _ngen; 
 } 
 
+double System::get_best_fitness() {
+    if (!_individuals.empty()) {
+        return _individuals[0].get_fitness();
+    }
+    return 0.0;
+}
+
 void System::finalize() { 
     if(_out_loss.is_open()) _out_loss.close(); // Check --> loss tracking file open and close it
 
@@ -211,8 +218,7 @@ void System::accept_immigrant(const arma::uvec &path) {
 }
 
 // Every rank calls this to load the shared city coordinates.
-void System::initialize_from_file(Random& rnd, const string& filename, int ncities, int npop, int ngen, double mut_prob, double p_exp) { 
-    _rnd = &rnd; 
+void System::initialize_from_file(Random& rnd, const string& filename, int ncities, int npop, int ngen, double mut_prob, double p_exp, int rank) {    _rnd = &rnd; 
     _type = "italy";  
     _ncities = ncities;  
     _npop = npop;  
@@ -247,7 +253,9 @@ void System::initialize_from_file(Random& rnd, const string& filename, int nciti
     } 
     fitness_sorting();
 
-    _out_loss.open(_type + "_losses.dat");
+    _out_loss.open(_type + "_losses_rank" + to_string(rank) + ".dat");
+    // Opzionale: stampa a video solo dal rank 0 per non intasare il terminale
+    if(rank == 0) cout << "\nStarting Optimization (Parallel): " << _type << "..." << endl;
 }
 
 // Parallel-aware Finalize: Ensures processes don't step on each other's toes

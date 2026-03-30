@@ -39,7 +39,8 @@ private:
     double get_average_best_half();
 
 public:
-    void initialize_from_file(Random& rnd, const std::string& filename, int ncities, int npop, int ngen, double mut_prob, double p_exp);
+    double get_best_fitness();
+    void initialize_from_file(Random& rnd, const string& filename, int ncities, int npop, int ngen, double mut_prob, double p_exp, int rank);
     arma::uvec get_best_individual_path() { return _individuals[0].get_x(); }
     void accept_immigrant(const arma::uvec &path);
     void finalize(int rank); // Update finalize to include rank in filename
